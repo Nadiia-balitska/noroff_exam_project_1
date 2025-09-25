@@ -1,0 +1,21 @@
+@import url('../utils/variables.css');
+
+.container {
+  width: 1440px;
+  padding: 0 88px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1439px) {
+  .container {
+    width: 768px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    min-width: 375px;
+    width: 100%;
+    padding: 0 13px;
+  }
+}

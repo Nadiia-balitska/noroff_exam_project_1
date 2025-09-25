@@ -1,0 +1,18 @@
+:root {
+   /* --main-color: #9db425; */
+  --main-color-text: #ffffff; 
+  --header-bg: #060210;
+  --purple-text: #886BEF;
+  --purple-gradient-btn:  linear-gradient(90deg, #342177 0%, #7154d8 100%);
+  --gray-gradient-btn: linear-gradient(90deg, #3d3d3f 0%, #78767e 100%);
+  --gray-text: rgba(255, 255, 255, 0.58);
+  --items-color-bg: #1F1D36;
+  --input-bg: #D9D9D9; 
+
+  --bg-main: #030614;
+  --bg-cards: #ffffff;
+  --bg-arrows: #2a2a2a;
+  --red: #A20000
+  /* --text: #fafafa; */
+  
+}
