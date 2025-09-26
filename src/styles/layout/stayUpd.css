@@ -1,0 +1,56 @@
+#subscribe {
+    margin-top: 50px;
+}
+#subscribe .subscribe-wrap{
+  background: var(--surface);
+  padding: 32px 24px;
+  text-align: center;
+
+}
+.subscribe-row{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+#subscribe-email{
+  width: min(720px, 100%);
+  height: 55px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: #0e0d19;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+#subscribe-email::placeholder{ color: rgba(255,255,255,.45); }
+#subscribe-email:hover{ border-color: rgba(255,255,255,.28); }
+#subscribe-email:focus{ border-color:#8f76ff; box-shadow:0 0 0 3px rgba(136,107,239,.25); }
+#subscribe-btn{
+  height: 55px;
+  width: 166px;
+  padding: 0 18px;
+  border-radius: 15px;
+border: 1px solid rgba(255, 255, 255, 0.65);
+  background: var(--purple-gradient-btn);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+#subscribe-btn:hover{ transform: translateY(-1px); }
+#subscribe-btn:focus-visible{ box-shadow: 0 0 0 3px var(--ring); }
+
+.subscribe-hint{
+  margin-top: 10px;
+  font-weight: 700;
+}
+.subscribe-hint.ok{ color: #1C822F; }
+.subscribe-hint.err{ color: var(--red); }
+
+@media (max-width: 640px){
+  .subscribe-row{ flex-direction: column; align-items: stretch; }
+  #subscribe-btn{ width: 100%; }
+}

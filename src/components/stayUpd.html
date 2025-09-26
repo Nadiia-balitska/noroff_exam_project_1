@@ -1,20 +1,18 @@
-<section><div class="container newsletter">
-  <div class="newsletter-wrap">
-    <div class="newsletter-copy">
-      <p class="section-name">Stay updated</p>
-      <h2 class="section-title">Get the weekly drop</h2>
-      <p class="newsletter-sub">No spam. Only the best stories and picks.</p>
-    </div>
+<section id="subscribe" class=" subscribe">
+  <div class="subscribe-wrap">
+    <div class="title-text-div"><h2 class="title">Stay Updated with Latest Tech</h2>
+    <p class="subtitle">Get exclusive deals, product launches, and tech insights delivered to your inbox.</p></div>
+    
 
-    <form class="newsletter-form" id="newsletterForm" novalidate>
-      <div class="nl-input">
-        <i class="fas fa-envelope"></i>
-        <input type="email" id="nlEmail" placeholder="Enter your email" required>
+    <form id="subscribe-form" novalidate>
+      <div class="subscribe-row">
+        <input id="subscribe-email" type="email" inputmode="email" autocomplete="email" placeholder="Enter your email address" required />
+        <button id="subscribe-btn" type="submit" class="btn btn-primary">
+          Subscribe
+          <span aria-hidden="true">✈️</span>
+        </button>
       </div>
-      <button class="btn-primary" type="submit">
-        <i class="fas fa-paper-plane"></i> Subscribe
-      </button>
+      <p id="subscribe-hint" class="subscribe-hint" aria-live="polite"></p>
     </form>
   </div>
-</div>
 </section>

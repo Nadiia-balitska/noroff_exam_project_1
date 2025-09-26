@@ -11,6 +11,9 @@ import './js/login.js';
 import './js/register.js';
 import './js/latest.js';
 import './js/popular.js';
+import './js/subscribe.js';
+import "./js/subscribe.js";
+
 
 
 
