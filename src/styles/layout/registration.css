@@ -34,18 +34,24 @@
   margin:0; color: var(--muted); font-size:14px;
 }
 
-.page-register .auth-form{ margin-top:14px; }
+.page-register .auth-form{
+   margin-top:14px; }
 .page-register .form-grid{
-  display:grid;
-  grid-template-columns: 1fr;
+  display:flex;
+  flex-direction: column;
   gap:14px;
+  max-width: 100%;
+    width: 349px;
+
 }
-.page-register .span-2{ grid-column: span 1; }
+/* .page-register .span-2{ grid-column: span 1; } */
 
 @media (min-width:768px){
   .page-register .auth-card{ padding:32px; }
   .page-register .form-grid{
-    grid-template-columns: 1fr 1fr;
+  width: 478px;
+  max-width: 100%;
+
     gap:16px;
   }
   .page-register .span-2{ grid-column: span 2; }
