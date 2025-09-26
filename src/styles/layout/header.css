@@ -4,3 +4,15 @@
     align-items: center;
     justify-content: space-between;
 }
+.nav-actions-home{
+font-weight: 600;
+font-size: 20px;
+color: var(--text);
+border: 1px solid rgba(255, 249, 249, 0.31);
+border-radius: 12px;
+width: 110px;
+height: 49px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
