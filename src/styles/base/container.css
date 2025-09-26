@@ -13,6 +13,27 @@
   justify-content:center;
   padding:24px 0 32px;
 }
+.title-text-div{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin-bottom: 55px;
+margin-top: 55px;
+}
+.title{
+font-weight: 800;
+font-size: 32px;
+color: var(--purple-text)
+
+}
+
+.subtitle{
+font-weight: 800;
+font-size: 20px;
+color: var(--gray-text);
+}
+
 @media screen and (max-width: 1439px) {
   .container {
     max-width: 768px;
