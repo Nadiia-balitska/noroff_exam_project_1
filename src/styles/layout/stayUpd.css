@@ -5,6 +5,7 @@
   background: var(--surface);
   padding: 32px 24px;
   text-align: center;
+  outline: 1px solid var( --gray-text);
 
 }
 .subscribe-row{
