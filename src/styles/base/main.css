@@ -1,24 +1,24 @@
 
 @import url("../utils/variables.css");
-@import url("../utils/fonts.css");
 
 @import url("./reset.css");
 @import url("./normalize.css");
 @import url("./container.css");
 
-@import url("/src/styles/layout/header.css");
-@import url("/src/styles/layout/hero.css");
-@import url("/src/styles/layout/card.css");
-@import url("/src/styles/layout/details.css");
-@import url("/src/styles/layout/footer.css");
-@import url("/src/styles/layout/latest.css");
-@import url("/src/styles/layout/login.css");
-@import url("/src/styles/layout/paymentMobile.css");
-@import url("/src/styles/layout/paymentScs.css");
-@import url("/src/styles/layout/popular.css");
-@import url("/src/styles/layout/registration.css");
-@import url("/src/styles/layout/sendContactScs.css");
-@import url("/src/styles/layout/stayUpd.css");
+@import url("../layout/header.css");
+@import url("../layout/hero.css");
+@import url("../layout/card.css");
+@import url("../layout/details.css");
+@import url("../layout/footer.css");
+@import url("../layout/latest.css");
+@import url("../layout/login.css");
+@import url("../layout/paymentMobile.css");
+@import url("../layout/paymentScs.css");
+@import url("../layout/popular.css");
+@import url("../layout/registration.css");
+@import url("../layout/sendContactScs.css");
+@import url("../layout/stayUpd.css");
+
 
 
 * {

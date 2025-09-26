@@ -2,7 +2,7 @@
 
 background:
     linear-gradient(rgba(3, 6, 20, .95), rgba(3, 6, 20, .85)),
-    url("/public/images/hero_bg_desc.jpg") center/cover no-repeat;
+    url("/images/hero_bg_desc.jpg") center/cover no-repeat;
   border-radius: var(--radius-lg);
 }
 
