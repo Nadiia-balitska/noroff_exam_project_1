@@ -1,5 +1,4 @@
 :root {
-   /* --main-color: #9db425; */
   --main-color-text: #ffffff; 
   --header-bg: #060210;
   --purple-text: #886BEF;
@@ -12,7 +11,15 @@
   --bg-main: #030614;
   --bg-cards: #ffffff;
   --bg-arrows: #2a2a2a;
-  --red: #A20000
-  /* --text: #fafafa; */
+  --red: #A20000;
+  --text: #fafafa;
   
+
+    --page-bg: var(--bg-main);
+  --surface: #1a1830;            
+  --surface-2:#201e38;
+  --text: var(--main-color-text);
+  --muted: var(--gray-text);
+  --line: rgba(255,255,255,.08);
+  --ring: rgba(136,107,239,.25); 
 }
