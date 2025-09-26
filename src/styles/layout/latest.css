@@ -44,7 +44,9 @@ height: auto;
   outline: 1px solid rgba(255,255,255,.06);
   overflow: hidden;
 }
-.media img { width: 100%; display: block; border-radius: 16px; }
+.media img { width: 100%; display: block; border-radius: 16px; 
+
+}
 
 .copy h3 { margin: 0 0 8px; font-size: 22px; }
 .copy p { margin: 0 0 14px; color: var(--muted); line-height: 1.5; }
