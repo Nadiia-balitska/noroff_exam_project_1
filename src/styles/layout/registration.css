@@ -1,0 +1,140 @@
+.page-register .main-content{
+  min-height:100dvh;
+  display:grid;
+  place-items:center;
+  padding:24px 0 40px;
+}
+
+.page-register .auth-container{ width:100%; max-width:560px; }
+
+.page-register .auth-card{
+  background: var(--items-color-bg);
+  border:1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding:24px;
+}
+
+.page-register .auth-header{
+  text-align:center;
+  margin-bottom:16px;
+}
+.page-register .auth-header i{
+  display:grid; place-items:center;
+  width:88px; height:88px; margin:0 auto 16px;
+  border-radius:50%;
+  background: radial-gradient(120% 120% at 50% 20%, rgba(136,107,239,.35), rgba(136,107,239,.08) 60%, transparent 70%);
+  color: var(--purple-text);
+  font-size:40px;
+}
+.page-register .auth-header h1{
+  margin:0 0 6px; font-size:28px; font-weight:800; letter-spacing:.2px;
+}
+.page-register .auth-header p{
+  margin:0; color: var(--muted); font-size:14px;
+}
+
+.page-register .auth-form{ margin-top:14px; }
+.page-register .form-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:14px;
+}
+.page-register .span-2{ grid-column: span 1; }
+
+@media (min-width:768px){
+  .page-register .auth-card{ padding:32px; }
+  .page-register .form-grid{
+    grid-template-columns: 1fr 1fr;
+    gap:16px;
+  }
+  .page-register .span-2{ grid-column: span 2; }
+}
+
+.page-register .form-group{ margin-bottom:0; } 
+.page-register .auth-form label{
+  display:block; margin:0 0 8px;
+  color: var(--text); font-weight:600; font-size:15px;
+}
+.page-register .input-container{ position:relative; }
+.page-register .input-container i{
+  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  color: var(--muted); font-size:14px; pointer-events:none;
+}
+.page-register .input-container input{
+  width:100%;
+  padding:12px 14px 12px 40px;
+  border-radius: var(--radius-sm);
+  border:1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  outline:none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.page-register .input-container input::placeholder{ color: rgba(250,250,250,.55); }
+.page-register .input-container input:focus{
+  border-color: var(--purple-text);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.page-register .hint{
+  margin-top:6px; font-size:12px; color: var(--muted);
+}
+.page-register .error{
+  margin-top:6px; font-size:12px; color: var(--red);
+}
+.page-register .auth-header i{
+  color: #fff; 
+  background: var(--green-gradient-btn, #1C822F); 
+  box-shadow: 0 6px 20px rgba(28,130,47,.35); 
+}
+
+.page-register .form-check .checkbox{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:14px; color: var(--muted);
+}
+.page-register .form-check input[type="checkbox"]{
+  appearance:none;
+  width:18px; height:18px; border-radius:4px;
+  border:1px solid rgba(255,255,255,.35);
+  background: transparent; display:grid; place-items:center;
+}
+.page-register .form-check input[type="checkbox"]:checked{
+  background: var(--purple-text); 
+  border-color: var(--purple-text);
+}
+.page-register .form-check input[type="checkbox"]:checked::after{
+  content:""; width:10px; height:10px; border-radius:2px; background:#101217;
+}
+
+.page-register .btn-primary{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  width:100%;
+  border:none;
+  border-radius: var(--radius-md);
+  padding:13px 16px;
+  font-size:18px; font-weight:800; color:#fff;
+  background: var(--green-gradient-btn);
+  cursor:pointer; transition: filter .2s, transform .02s;
+}
+.page-register .btn-primary:hover{ filter:brightness(1.06); }
+.page-register .btn-primary:active{ transform: translateY(1px); }
+
+.page-register .auth-footer{
+  text-align:center; margin-top:14px; color: var(--muted); font-size:14px;
+}
+.page-register .auth-footer a{
+  color: var(--purple-text); text-decoration:none; font-weight:700;
+}
+.page-register .auth-footer a:hover{ text-decoration:underline; }
+
+.page-register .toast-container{ position:fixed; right:16px; bottom:16px; z-index:1000; display:flex; flex-direction:column; gap:8px; }
+.page-register .toast{
+  min-width:240px; max-width:90vw; padding:10px 12px;
+  border-radius: var(--radius-sm);
+  background:#222538; color:#fff;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow-2); font-size:14px;
+}
+.page-register .toast.success{ border-color: rgba(46,204,113,.35); }
+.page-register .toast.error{ border-color: rgba(255,107,107,.4); }

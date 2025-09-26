@@ -4,6 +4,7 @@
   --purple-text: #886BEF;
   --purple-gradient-btn:  linear-gradient(90deg, #342177 0%, #7154d8 100%);
   --gray-gradient-btn: linear-gradient(90deg, #3d3d3f 0%, #78767e 100%);
+  --green-gradient-btn: #1C822F;
   --gray-text: rgba(255, 255, 255, 0.58);
   --items-color-bg: #1F1D36;
   --input-bg: #D9D9D9; 
@@ -15,11 +16,17 @@
   --text: #fafafa;
   
 
-    --page-bg: var(--bg-main);
   --surface: #1a1830;            
   --surface-2:#201e38;
-  --text: var(--main-color-text);
   --muted: var(--gray-text);
   --line: rgba(255,255,255,.08);
   --ring: rgba(136,107,239,.25); 
+
+   --ff: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --radius-lg: 24px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --shadow-1: 0 10px 35px rgba(0,0,0,.45);
+  --shadow-2: 0 6px 20px rgba(0,0,0,.35);
 }

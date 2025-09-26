@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — HotView Labs</title>
+
+  <link rel="stylesheet" href="/src/styles/base/main.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="page-register">
+  <div data-include="/src/components/headerSignIn.html"></div>
+
+  <section class="container main-content">
+    <div class="auth-container">
+        <div class="auth-card">
+      <div class="auth-header">
+        <i class="fas fa-user-plus"></i>
+        <h1>Create your account</h1>
+        <p>Join HotView Labs to access premium tech insights</p>
+      </div>
+
+        <form id="registerForm" class="auth-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fullName">Full name</label>
+              <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your name" autocomplete="name">
+              </div>
+            </div>
+
+            <div class="form-group span-2">
+              <label for="email">Email</label>
+              <div class="input-container">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-container">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="6" required>
+              </div>
+              <p class="hint">Min. 6 characters</p>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm password</label>
+              <div class="input-container">
+                <i class="fas fa-shield-alt"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password" required>
+              </div>
+            </div>
+
+            <div class="form-check span-2">
+              <label class="checkbox">
+                <input type="checkbox" id="terms" required>
+                <span>I agree to the <a href="#" target="_blank" rel="noopener">Terms</a> and <a href="#" target="_blank" rel="noopener">Privacy Policy</a></span>
+              </label>
+            </div>
+
+            <div class="span-2">
+              <button type="submit" class="btn-primary full-width">
+                <i class="fas fa-user-plus"></i>
+                Create Account
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a href="/src/pages/login.html">Sign in here</a></p>
+          <div class="demo-info"><p><small>Demo: only email + password are sent to API</small></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+  </section>
+
+  <div data-include="/src/components/footer.html"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
