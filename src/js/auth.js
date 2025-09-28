@@ -72,7 +72,23 @@ const payload = {
   return { created: true, token, user };
 }
 
-export function logout(){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); localStorage.removeItem(EXP_KEY); }
+export function logout(redirect) {
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(EXP_KEY);
+    localStorage.removeItem("auth");       
+    document.dispatchEvent(new Event("auth:changed"));
+  } catch {}
+
+  const params = new URLSearchParams(window.location.search);
+ 
+
+  const target = redirect || params.get("redirect") || '/index.html';
+
+  window.location.replace(target);
+}
+
 
 
 window.Auth = { registerRequest, loginRequest, getToken, logout };

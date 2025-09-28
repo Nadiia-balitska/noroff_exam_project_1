@@ -1,0 +1,26 @@
+<header class="header">
+  <div class="header__inner container">
+    <a class="brand" href="/">
+      <img src="/public/icon/logo.png" alt="HotView Labs" class="brand__logo">
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <div id="header-guest" class="state-guest">
+        <a class="btn btn-primary" href="/src/pages/login.html">Login</a>
+      </div>
+
+      <div id="header-user" class="state-user" hidden>
+        <div class="userchip" id="userchip">
+          <span class="userchip__avatar" id="user-initials">U</span>
+          <span class="userchip__name" id="user-name">User</span>
+        </div>
+
+        <a class="btn btn-ghost" href="/src/pages/card.html">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          <span>Cart</span>
+        </a>
+        <button id="logout-btn" class="btn btn-danger" type="button">Logout</button>
+      </div>
+    </nav>
+  </div>
+</header>

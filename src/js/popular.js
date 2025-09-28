@@ -65,18 +65,25 @@ function render(items, append=false){
   const grid  = $("#popular-grid");
   const count = $("#popular-count");
   const more  = $("#popular-more");
+  const base  = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : "/";
+
   if (!append) grid.innerHTML = "";
   items.forEach(p => {
     const rating = Number(p?.rating ?? 0);
     const price  = Number(p?.price ?? 0);
     const imgUrl = p?.image?.url || "https://placehold.co/640x400?text=No+Image";
     const imgAlt = p?.image?.alt || p?.title || "Product image";
+    const productUrl = `${base}product.html?id=${encodeURIComponent(p.id)}`;
+
     const card = document.createElement("article");
     card.className = "card";
+    card.dataset.id = p.id;
     card.innerHTML = `
-      <div class="thumb"><img src="${imgUrl}" alt="${imgAlt}"></div>
+      <a class="thumb" href="${productUrl}" aria-label="Open ${p?.title || 'product'}">
+        <img src="${imgUrl}" alt="${imgAlt}">
+      </a>
       <div class="body">
-        <h3>${p?.title || "Untitled"}</h3>
+        <h3><a href="${productUrl}">${p?.title || "Untitled"}</a></h3>
         <div class="meta">
           <div class="stars" aria-hidden="true">${starRow(rating)}</div>
           <small>${rating.toFixed(1)}</small>
@@ -84,7 +91,7 @@ function render(items, append=false){
         <p>${p?.description || ""}</p>
         <div class="price">$${price.toFixed(2)}</div>
         <div class="actions">
-          <button class="btn btn-primary" onclick="location.href='product.html?id=${p.id}'">View Details</button>
+          <a class="btn btn-primary" href="${productUrl}">View Details</a>
           ${isOwner ? `<button class="btn btn-ghost" data-add="${p.id}">Add to Cart</button>` : ""}
         </div>
       </div>`;
@@ -101,6 +108,8 @@ function attachCart(){
   grid.addEventListener("click", e => {
     const btn = e.target.closest("[data-add]");
     if(!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
     const id = btn.getAttribute("data-add");
     if (!cart.includes(id)) cart.push(id);
     localStorage.setItem("cart", JSON.stringify(cart));

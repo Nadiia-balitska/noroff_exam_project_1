@@ -2,7 +2,7 @@
 
 background:
     linear-gradient(rgba(3, 6, 20, .95), rgba(3, 6, 20, .85)),
-    url("/images/hero_bg_desc.jpg") center/cover no-repeat;
+    url("/public/images/hero_bg_desc.jpg") center/cover no-repeat;
   border-radius: var(--radius-lg);
 }
 
@@ -12,7 +12,7 @@ font-size: 64px;
 }
 
 .hero-title .hero-span {
-  color: var(--purple-text); /* або будь-який з твоїх варів */
+  color: var(--purple-text);
 }
 .hero-grid{
   display: grid;
@@ -68,11 +68,15 @@ margin: 10px;
 }
 
 @media (min-width: 992px){
+  
   .hero-grid{ grid-template-columns: 1.1fr .9fr; align-items: center; }
 }
 
 
 @media( max-width: 768px){
+  .hero{
+   height: 400px;
+  }
     .hero-img{
         display: none;
     }
@@ -80,3 +84,5 @@ margin: 10px;
     .hero-actions{ 
     flex-direction: column;}
 }
+
+
