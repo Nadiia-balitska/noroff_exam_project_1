@@ -41,7 +41,18 @@ height: 41px;
 }
 .hero-actions{ display:flex;
     flex-direction: row;
-     gap:12px; flex-wrap:wrap; }
+     gap:12px; 
+     flex-wrap:wrap; 
+    justify-content: start;
+    align-items: start;
+
+    }
+  
+.hero-actions a {  display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    }
 .hero-cta{ padding: 12px 18px; border-radius: var(--radius-md); }
 .hero-ghost{
   display:inline-flex; align-items:center; gap:8px;

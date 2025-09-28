@@ -3,11 +3,11 @@
     position: sticky; top: 0; z-index: 40;
   background: var(--header-bg);
   border-bottom: 1px solid rgba(255,255,255,.06);
+  
     
 }
 .nav-content{
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content:space-between;
 }
@@ -24,13 +24,14 @@ justify-content: center;
 align-items: center;
 }
 
-.header-user{
+.state-user{
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 19px;
+    justify-content: center;
+    align-items: center;
 }
-.header__inner{ display:flex; align-items:center; justify-content:space-between;  }
+.header .header__inner{ display:flex; flex-direction: row; align-items:center; justify-content:space-between;  }
 .brand{ display:flex; gap:10px; align-items:center; text-decoration:none; color:inherit; }
 .brand__logo{  object-fit:contain; }
 .brand__text strong{ display:block; line-height:1; }
