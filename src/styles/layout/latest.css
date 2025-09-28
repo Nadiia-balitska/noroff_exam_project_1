@@ -58,11 +58,19 @@ height: auto;
 
 .price { font-size: 32px; font-weight: 900; color: #9b86ff; margin: 12px 0 18px; }
 
-.actions { display: flex; gap: 16px; flex-wrap: wrap; }
-.btn {
-  appearance: none; border: 0; cursor: pointer; font-weight: 800;
+.latest .actions { display: flex; gap: 16px; flex-wrap: nowrap; justify-content: start;
+align-items: start;
+}
+.latest .btn {
+margin: 0 auto;
+  appearance: none; border: 0; cursor: pointer; 
   border-radius: 14px; padding: 12px 18px;
   transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+max-width: 353px;
+width: 100%;
+  height: 41px;
+font-size: 12px;
+
 }
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 .btn-primary {
@@ -71,12 +79,12 @@ height: auto;
   border: 1px solid rgba(255,255,255,.25);
 }
 .btn-primary:hover { transform: translateY(-1px); }
-.btn-ghost {
+.latest .btn-ghost {
   background: #1d1a2a;
   color: #eee;
   border: 1px solid rgba(255,255,255,.35);
 }
-.btn-ghost:hover { transform: translateY(-1px); }
+.latest .btn-ghost:hover { transform: translateY(-1px); }
 
 .ctrl { position: absolute; inset-block: 0; width: 100%; pointer-events: none; }
 .ctrl button {
@@ -105,4 +113,11 @@ max-height: 178px;}
   .ctrl .prev { left: 8px; }
   .ctrl .next { right: 8px; }
   .dots { margin-top: 18px; }
+  .latest .actions { flex-wrap: wrap;
+}
+  .latest .btn {
+    max-width: 167px;
+    width: 100%;
+  }
+
 }

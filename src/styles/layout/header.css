@@ -26,6 +26,8 @@ align-items: center;
 
 .header-user{
     display: flex;
+    /* flex-direction: row; */
+    /* flex-wrap: nowrap; */
     gap: 19px;
 }
 .header__inner{ display:flex; align-items:center; justify-content:space-between;  }

@@ -6,8 +6,19 @@ const API = `${window.__API_BASE__}/online-shop`;
 
 const isOwner = (() => {
   const url = new URL(window.location.href);
-  if (url.searchParams.get("owner") === "1") localStorage.setItem("role", "owner");
-  return localStorage.getItem("role") === "owner";
+
+  if (url.searchParams.get("owner") === "1") {
+    const devAuth = { token: "dev-owner", name: "Owner (dev)" };
+    try { localStorage.setItem("auth", JSON.stringify(devAuth)); } catch {}
+  }
+
+  let loggedIn = false;
+  try {
+    const auth = JSON.parse(localStorage.getItem("auth") || "null");
+    loggedIn = !!auth?.token;
+  } catch {}
+
+  return loggedIn;
 })();
 
 function waitFor(selector, root = document, timeout = 8000) {
@@ -91,7 +102,7 @@ export async function initLatest() {
           <div class="price">$${price.toFixed(2)}</div>
           <div class="actions">
             <a class="btn btn-primary" href="${href}">View Product 🧭</a>
-            ${isOwner ? `<button class="btn btn-ghost" data-add="${p.id}" type="button">Add to Cart 🛒</button>` : ""}
+            ${isOwner ? `<button class="btn btn-ghost " data-add="${p.id}" type="button">Add to Cart 🛒</button>` : ""}
           </div>
         </div>
       `;

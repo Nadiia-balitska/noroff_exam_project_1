@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card</title>
+    <link rel="stylesheet" href="/src/styles/base/main.css">
+</head>
+<body>
+
+     <div data-include="../components/header.html"></div>
+
+
+    <main class="cart-page container">
+  <h1 class="cart-title title">🛍️ Shopping Cart</h1>
+
+  <section class="cart-content">
+    <div class="cart-items" id="cart-items">
+    </div>
+
+    <div class="payment-box">
+      <h2>Payment Method</h2>
+      <form id="payment-form" class="payment-form">
+        <div class="card-types">
+          <img src="/public/icon/visa.png" alt="Visa" />
+          <img src="/public/icon/mastercard.png" alt="MasterCard" />
+          <img src="/public/icon/paypal.png" alt="PayPal" />
+        </div>
+
+        <label>Cardholder Name</label>
+        <input type="text" name="name" required />
+
+        <label>Card Number</label>
+        <input type="text" name="number" required maxlength="16" />
+
+        <div class="payment-row">
+          <div>
+            <label>Expiry Date</label>
+            <input type="text" name="exp" placeholder="MM/YY" required />
+          </div>
+          <div>
+            <label>CVV</label>
+            <input type="text" name="cvv" maxlength="3" required />
+          </div>
+        </div>
+
+        <div class="price-summary">
+          <p>Subtotal: <span id="subtotal">0$</span></p>
+          <p>Shipping: <span id="shipping">10$</span></p>
+          <h3>Total: <span id="total">0$</span></h3>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Checkout →</button>
+        <a href="/src/index.html" class="btn btn-ghost">← Continue Shopping</a>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

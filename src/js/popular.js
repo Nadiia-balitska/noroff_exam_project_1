@@ -20,16 +20,23 @@ const CATEGORY_MAP = {
   wearables: ["wearable","wearables","watch","smartwatch","fitbit","band","airpods","buds"]
 };
 
-const isOwner = (() => {
-  const url = new URL(window.location.href);
-  if (url.searchParams.get("owner") === "1") localStorage.setItem("role", "owner");
-  return localStorage.getItem("role") === "owner";
-})();
+function isOwner(){
+  const url = new URL(location.href);
+  if (url.searchParams.get("owner")==="1") return true;
+  try {
+    const auth = JSON.parse(localStorage.getItem("auth") || "null");
+    return !!auth?.token;
+  } catch { return false; }
+}
 
 const $  = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
-function starRow(r){ const full=Math.floor(Number(r)||0); let s=""; for(let i=0;i<5;i++) s+= i<full?'<span class="on">★</span>':'☆'; return s; }
+function starRow(r){
+  const full=Math.floor(Number(r)||0);
+  let s=""; for(let i=0;i<5;i++) s+= i<full?'<span class="on">★</span>':'☆';
+  return s;
+}
 
 function clientFilter(items, q, filter){
   const ql = (q||"").trim().toLowerCase();
@@ -65,6 +72,7 @@ function render(items, append=false){
   const grid  = $("#popular-grid");
   const count = $("#popular-count");
   const more  = $("#popular-more");
+  if (!grid) return;
 
   if (!append) grid.innerHTML = "";
   items.forEach(p => {
@@ -91,18 +99,20 @@ function render(items, append=false){
         <div class="price">$${price.toFixed(2)}</div>
         <div class="actions">
           <a class="btn btn-primary" href="${productUrl}">View Details</a>
-          ${isOwner ? `<button class="btn btn-ghost" data-add="${p.id}">Add to Cart</button>` : ""}
+          ${isOwner() ? `<button class="btn btn-ghost" data-add="${p.id}">Add to Cart</button>` : ""}
         </div>
       </div>`;
     grid.appendChild(card);
   });
+
   state.items = append ? state.items.concat(items) : items;
-  count.textContent = String(state.items.length);
-  more.style.display = state.hasMore ? "inline-flex" : "none";
+  if (count) count.textContent = String(state.items.length);
+  if (more)  more.style.display = state.hasMore ? "inline-flex" : "none";
 }
 
 function attachCart(){
   const grid = $("#popular-grid");
+  if (!grid) return;
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
   grid.addEventListener("click", e => {
     const btn = e.target.closest("[data-add]");
@@ -118,26 +128,27 @@ function attachCart(){
 
 async function loadInitial(){
   if (state.loading) return; state.loading = true;
-  state.page = 1; state.items = [];
-  $("#popular-grid").innerHTML = `<div class="card"><div class="body"><p>Loading...</p></div></div>`;
+  const grid = $("#popular-grid");
+  if (grid) grid.innerHTML = `<div class="card"><div class="body"><p>Loading...</p></div></div>`;
   try{
+    state.page = 1; state.items = [];
     const { items, hasMore } = await fetchPage({ page: 1, limit: state.limit, q: state.q, filter: state.filter });
     state.hasMore = hasMore;
     render(items, false);
-    if (!items.length){
-      $("#popular-grid").innerHTML = `<div class="card"><div class="body"><p>No products match your filters.</p><div class="actions"><button class="btn btn-ghost" id="popular-clear">Clear filters</button></div></div></div>`;
-      $("#popular-more").style.display = "none";
+    if (!items.length && grid){
+      grid.innerHTML = `<div class="card"><div class="body"><p>No products match your filters.</p><div class="actions"><button class="btn btn-ghost" id="popular-clear">Clear filters</button></div></div></div>`;
+      const more = $("#popular-more"); if (more) more.style.display = "none";
       const clear = document.getElementById("popular-clear");
       clear?.addEventListener("click", async () => {
-        state.q = ""; state.filter = "all"; $("#popular-search").value = "";
+        state.q = ""; state.filter = "all"; const s = $("#popular-search"); if (s) s.value = "";
         $$("#popular .chip").forEach(c=>c.classList.toggle("is-active", c.dataset.filter==="all"));
         await loadInitial();
       });
     }
   } catch (e){
-    $("#popular-grid").innerHTML = `<div class="card"><div class="body"><p>Failed to load: ${e.message}</p></div></div>`;
+    if (grid) grid.innerHTML = `<div class="card"><div class="body"><p>Failed to load: ${e.message}</p></div></div>`;
     state.hasMore = false;
-    $("#popular-more").style.display = "none";
+    const more = $("#popular-more"); if (more) more.style.display = "none";
   } finally { state.loading = false; }
 }
 
@@ -158,19 +169,25 @@ export async function initPopular(){
   const search = $("#popular-search");
   const more   = $("#popular-more");
   const chips  = $$("#popular .chip");
-  if (!search || !more) return;
+
   const deb = (fn, ms=300)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms);} };
-  search.addEventListener("input", deb(async (e) => {
+
+  search?.addEventListener("input", deb(async (e) => {
     state.q = e.target.value;
     await loadInitial();
   }, 300));
+
   chips.forEach(ch => ch.addEventListener("click", async () => {
     chips.forEach(c => c.classList.remove("is-active"));
     ch.classList.add("is-active");
     state.filter = (ch.dataset.filter || "all").toLowerCase();
     await loadInitial();
   }));
-  more.addEventListener("click", loadMore);
+
+  more?.addEventListener("click", loadMore);
+
+  document.addEventListener("auth:changed", loadInitial);
+
   attachCart();
   await loadInitial();
 }
