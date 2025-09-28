@@ -65,7 +65,6 @@ function render(items, append=false){
   const grid  = $("#popular-grid");
   const count = $("#popular-count");
   const more  = $("#popular-more");
-  const base  = (typeof import.meta !== "undefined" && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : "/";
 
   if (!append) grid.innerHTML = "";
   items.forEach(p => {
@@ -73,7 +72,7 @@ function render(items, append=false){
     const price  = Number(p?.price ?? 0);
     const imgUrl = p?.image?.url || "https://placehold.co/640x400?text=No+Image";
     const imgAlt = p?.image?.alt || p?.title || "Product image";
-    const productUrl = `${base}product.html?id=${encodeURIComponent(p.id)}`;
+    const productUrl = `/src/pages/product.html?id=${encodeURIComponent(p.id)}`;
 
     const card = document.createElement("article");
     card.className = "card";

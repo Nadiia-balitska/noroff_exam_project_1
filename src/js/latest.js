@@ -4,8 +4,6 @@ if (!window.__API_BASE__) {
 }
 const API = `${window.__API_BASE__}/online-shop`;
 
-
-
 const isOwner = (() => {
   const url = new URL(window.location.href);
   if (url.searchParams.get("owner") === "1") localStorage.setItem("role", "owner");
@@ -32,18 +30,24 @@ function starRow(r) {
   return s;
 }
 
-async function getLatest(limit = 3) {
-  const url = `${API}?limit=${limit}&page=1&sort=id&sortOrder=desc`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
-  return json.data;
-  if (!products.length) {
-  products = [
-    { id: "stub1", title: "No products", price: 0, rating: 0, description: "—", image: { url: "https://placehold.co/600x400?text=No+Data" } },
-  ];
+function productLink(id) {
+  const metaPath = document.querySelector('meta[name="app:product-path"]')?.content;
+
+  const fallbackPath = "/src/pages/product.html";
+
+  const path = metaPath || fallbackPath;
+
+  const url = new URL(path, window.location.origin);
+  url.searchParams.set("id", id);
+  return url.toString();
 }
 
+async function getLatest(limit = 3) {
+  const url = `${API}?limit=${limit}&page=1&sort=id&sortOrder=desc`;
+  const res = await fetch(url, { headers: { Accept: "application/json" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  return Array.isArray(json?.data) ? json.data : [];
 }
 
 export async function initLatest() {
@@ -67,26 +71,27 @@ export async function initLatest() {
       slide.setAttribute("aria-roledescription", "slide");
       slide.setAttribute("aria-label", `${idx + 1} of ${products.length}`);
 
-      const imgUrl = p?.image?.url || "";
+      const imgUrl = p?.image?.url || "https://placehold.co/800x500?text=No+Image";
       const imgAlt = p?.image?.alt || p.title || "Product image";
       const rating = p?.rating ?? 0;
       const price  = Number(p?.price ?? 0);
+      const href   = productLink(p.id);
 
       slide.innerHTML = `
-        <div class="media">
+        <a class="media" href="${href}">
           <img src="${imgUrl}" alt="${imgAlt}">
-        </div>
+        </a>
         <div class="copy">
-          <h3>${p.title}</h3>
-          <p>${p.description}</p>
+          <h3><a href="${href}">${p.title}</a></h3>
+          <p>${p.description || ""}</p>
           <div class="rating">
             <div class="stars" aria-hidden="true">${starRow(rating)}</div>
             <small>${Number(rating).toFixed(1)}</small>
           </div>
           <div class="price">$${price.toFixed(2)}</div>
           <div class="actions">
-            <button class="btn btn-primary" onclick="location.href='product.html?id=${p.id}'">View Product 🧭</button>
-            ${isOwner ? `<button class="btn btn-ghost" data-add="${p.id}">Add to Cart 🛒</button>` : ""}
+            <a class="btn btn-primary" href="${href}">View Product 🧭</a>
+            ${isOwner ? `<button class="btn btn-ghost" data-add="${p.id}" type="button">Add to Cart 🛒</button>` : ""}
           </div>
         </div>
       `;
@@ -105,6 +110,8 @@ export async function initLatest() {
   track.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-add]");
     if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
     const id = btn.getAttribute("data-add");
     if (!cart.includes(id)) cart.push(id);
     localStorage.setItem("cart", JSON.stringify(cart));

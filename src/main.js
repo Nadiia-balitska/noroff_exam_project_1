@@ -12,12 +12,13 @@ import './js/register.js';
 import './js/latest.js';
 import './js/popular.js';
 import './js/subscribe.js';
-import "./js/subscribe.js";
+import './js/product.js';
+
 import "./js/header.js";
 import { initHeader } from "./js/header.js";
 import { initLatest } from "./js/latest.js";
 import { initPopular }  from "./js/popular.js";
-  import { initProduct } from "/src/js/product.js";
+  import { initProduct } from "./js/product.js";
 
 
 
@@ -25,6 +26,6 @@ import { initPopular }  from "./js/popular.js";
 document.addEventListener("includes:ready", () => {
   initLatest();
    initPopular();   
-      initProduct();
    initHeader();
+   initProduct();
 });

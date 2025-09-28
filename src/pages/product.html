@@ -5,19 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Product details</title>
 
-  <link rel="icon" type="image/png" href="/icon/logo.png"/>
+  <link rel="icon" type="image/png" href="/public/icon/logo.png"/>
   <link rel="stylesheet" href="/src/styles/base/main.css"/>
-  <link rel="stylesheet" href="/src/styles/pages/product.css"/>
 </head>
 <body>
-  <div data-include="/components/header.html"></div>
+  <div style="display: none;" data-include="/src/components/header.html"></div>
 
-  <main class="container">
-    <section id="product" class="product"></section>
-  </main>
+  <main class="container product-wrap">
+    <div class="p-topbar">
+      <a class="p-back" href="/src/index.html">
+        <span class="ico">←</span> Back to home
+      </a>
 
-  <div data-include="/components/footer.html"></div>
+      <button id="p-share" class="p-sharebtn" aria-label="Share">
+        <span class="ico">⤴︎</span> <span class="label">Share</span>
+      </button>
 
+    </div>
+    <section id="product" class="p-card"></section>
+
+
+<script type="module" src="/src/main.js"></script>
   
 </body>
 </html>

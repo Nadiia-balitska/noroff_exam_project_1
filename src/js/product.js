@@ -3,134 +3,176 @@ const API = `${API_BASE}/online-shop`;
 
 const isOwner = (() => {
   const url = new URL(window.location.href);
-  if (url.searchParams.get("owner") === "1") localStorage.setItem("role", "owner");
-  return localStorage.getItem("role") === "owner";
+
+  if (url.searchParams.get("owner") === "1") {
+    const devAuth = { token: "dev-owner", name: "Owner (dev)" };
+    try { localStorage.setItem("auth", JSON.stringify(devAuth)); } catch {}
+  }
+
+  let loggedIn = false;
+  try {
+    const auth = JSON.parse(localStorage.getItem("auth") || "null");
+    loggedIn = !!auth?.token;
+  } catch {}
+
+  return loggedIn;
 })();
 
-const $ = (sel, root=document) => root.querySelector(sel);
 
-function stars(r){
+const $ = (s, r = document) => r.querySelector(s);
+
+function stars(r) {
   const n = Math.round(Number(r) || 0);
-  let s = "";
-  for (let i=0;i<5;i++) s += i < n ? "★" : "☆";
-  return s;
+  return "★★★★★☆☆☆☆☆".slice(5 - n, 10 - n);
 }
 
-async function getProduct(id){
-  const res = await fetch(`${API}/${encodeURIComponent(id)}`, { headers:{Accept:"application/json"} });
-  if(!res.ok) throw new Error(`HTTP ${res.status}`);
-  const json = await res.json();
-  return json?.data || json;
+function getId() {
+  const u = new URL(location.href);
+  return u.searchParams.get("id") || (u.hash.match(/id=([^&]+)/)?.[1] ?? null);
 }
 
-function priceBlock(p){
-  const price = Number(p?.price ?? 0);
-  const discounted = Number(p?.discountedPrice ?? (p?.discountPercentage ? price*(1 - Number(p.discountPercentage)/100) : price));
-  const hasDiscount = discounted < price && discounted > 0;
-  return `
-    <div class="p-price">
-      <span class="now">$${discounted.toFixed(2)}</span>
-      ${hasDiscount ? `<span class="old">$${price.toFixed(2)}</span>` : ""}
-    </div>
-  `;
-}
-
-function tagsBlock(tags){
-  if(!Array.isArray(tags) || !tags.length) return "";
-  return `<div class="p-tags">${tags.map(t=>`<span class="p-tag">#${t}</span>`).join("")}</div>`;
-}
-
-function reviewsBlock(reviews){
-  if(!Array.isArray(reviews) || !reviews.length){
-    return `<div class="p-reviews"><h3>Reviews</h3><p class="p-empty">No reviews yet.</p></div>`;
+async function getProduct(id) {
+  const url = `${API}/${encodeURIComponent(id)}`;
+  const res = await fetch(url, { headers: { Accept: "application/json" } });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`HTTP ${res.status} at ${url}${body ? `\n${body.slice(0, 120)}` : ""}`);
   }
-  const list = reviews.map(r => `
-    <div class="p-review">
-      <div class="r-head">
-        <span class="r-name">${r?.username || "User"}</span>
-        <span class="r-stars" aria-hidden="true">${stars(r?.rating)}</span>
-      </div>
-      <p class="r-text">${r?.description || ""}</p>
-    </div>
-  `).join("");
-  return `<div class="p-reviews"><h3>Reviews (${reviews.length})</h3>${list}</div>`;
+  const ct = res.headers.get("content-type") || "";
+  if (!ct.includes("application/json")) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Unexpected response (not JSON) at ${url}${body ? `\n${body.slice(0, 120)}` : ""}`);
+  }
+  const j = await res.json();
+  return j?.data ?? j;
 }
 
-function shareUrl(id){
-  const url = new URL(window.location.href);
-  url.searchParams.set("id", id);
-  return url.toString();
+function toast(msg) {
+  const t = $("#toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(t._h);
+  t._h = setTimeout(() => (t.hidden = true), 1600);
 }
 
-function renderProduct(p){
-  const wrap = $("#product");
-  const imgUrl = p?.image?.url || "https://placehold.co/960x600?text=No+Image";
-  const imgAlt = p?.image?.alt || p?.title || "Product image";
-  wrap.innerHTML = `
-    <div class="p-gallery">
-      <div class="hero"><img src="${imgUrl}" alt="${imgAlt}"></div>
-    </div>
-    <div class="p-info">
-      <h1 class="p-title">${p?.title || "Untitled product"}</h1>
-      <div class="p-rating">
-        <div class="p-stars" aria-hidden="true">${stars(p?.rating)}</div>
-        <small>${Number(p?.rating ?? 0).toFixed(1)}</small>
-      </div>
-      ${priceBlock(p)}
-      <p class="p-desc">${p?.description || ""}</p>
-      ${tagsBlock(p?.tags)}
+function render(p) {
+  const root = $("#product");
+  const img = p?.image?.url || "https://placehold.co/800x600?text=No+Image";
+  const alt = p?.image?.alt || p?.title || "Product image";
+  const rating = Number(p?.rating ?? 0).toFixed(1);
 
-      <div class="p-actions">
-        <button id="share-btn" class="p-share"><span>Share</span></button>
-        <button class="btn btn-primary" onclick="location.href='/'">Home</button>
-        ${isOwner ? `<button id="add-cart" class="btn btn-ghost">Add to Cart</button>` : ""}
+  const basePrice = Number(p?.price ?? 0);
+  const discounted = Number(
+    p?.discountedPrice ?? (p?.discountPercentage ? basePrice * (1 - Number(p.discountPercentage) / 100) : basePrice)
+  );
+  const hasDiscount = discounted > 0 && discounted < basePrice;
+
+  const thumbs = (Array.isArray(p?.images) && p.images.length ? p.images.map((x) => x.url) : [img, img, img]).slice(0, 3);
+
+  root.innerHTML = `
+    <div class="p-grid">
+      <div class="p-gallery">
+        <div class="hero"><img id="p-hero" src="${img}" alt="${alt}" loading="eager"></div>
+        <div class="p-thumbs" id="p-thumbs">
+          ${thumbs
+            .map(
+              (u, i) => `
+            <button class="p-thumb" aria-current="${i === 0}">
+              <img src="${u}" alt="thumbnail ${i + 1}" loading="lazy">
+            </button>`
+            )
+            .join("")}
+        </div>
       </div>
 
-      ${reviewsBlock(p?.reviews)}
+      <div class="p-info">
+        ${p?.category ? `<span class="p-cat">${p.category}</span>` : ""}
+        <h1 class="p-title">${p?.title || "Untitled"}</h1>
+
+        <div class="p-rating">
+          <span class="p-stars" aria-hidden="true">${stars(p?.rating)}</span>
+          <small>${rating}</small>
+        </div>
+
+        <div class="p-price">
+          <span class="now">$${discounted.toFixed(2)}</span>
+          ${hasDiscount ? `<span class="old" style="margin-left:8px;opacity:.6;text-decoration:line-through">$${basePrice.toFixed(2)}</span>` : ""}
+        </div>
+
+        <div class="p-desc">
+          <h4>Description</h4>
+          <p>${p?.description || ""}</p>
+        </div>
+
+        <div class="p-actions">
+          ${isOwner ? `<button id="p-add" class="p-add"><span class="ico">🛒</span> Add to cart</button>` : ""}
+          <button id="p-heart" class="p-heart" aria-label="Add to wishlist">♡</button>
+        </div>
+      </div>
     </div>
   `;
 
-  const shareBtn = $("#share-btn", wrap);
-  shareBtn?.addEventListener("click", async () => {
-    const url = shareUrl(p.id);
-    try{
-      if (navigator.share) await navigator.share({ title: p.title, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        shareBtn.textContent = "Copied!";
-        setTimeout(()=> shareBtn.textContent = "Share", 1200);
-      }
-    }catch{}
+  const hero = $("#p-hero", root);
+  $("#p-thumbs", root)?.addEventListener("click", (e) => {
+    const btn = e.target.closest(".p-thumb");
+    if (!btn) return;
+    const src = $("img", btn)?.src;
+    if (!src) return;
+    hero.src = src;
+    [...e.currentTarget.children].forEach((c) => c.setAttribute("aria-current", "false"));
+    btn.setAttribute("aria-current", "true");
   });
 
-  const add = $("#add-cart", wrap);
-  if(add){
+  $("#p-add")?.addEventListener("click", () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    add.addEventListener("click", ()=>{
-      if(!cart.includes(p.id)) cart.push(p.id);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      add.textContent = "Added ✓";
-    });
-  }
+    if (!cart.includes(p.id)) cart.push(p.id);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    toast("Added to cart ✓");
+    const btn = $("#p-add");
+    if (btn) {
+      btn.textContent = "✓ Added";
+      btn.disabled = true;
+      btn.style.opacity = ".85";
+    }
+  });
+
+  $("#p-heart")?.addEventListener("click", (e) => {
+    e.currentTarget.textContent = e.currentTarget.textContent === "♡" ? "❤" : "♡";
+  });
+
+  const shareBtn = $("#p-share") || document.getElementById("p-share");
+  shareBtn?.addEventListener("click", async () => {
+    const url = new URL(location.href);
+    url.searchParams.set("id", p.id);
+    try {
+      if (navigator.share) await navigator.share({ title: p.title, url: url.toString() });
+      else {
+        await navigator.clipboard.writeText(url.toString());
+        toast("Product link copied to clipboard!");
+      }
+    } catch {}
+  });
 }
 
-export async function initProduct(){
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  const mount = $("#product");
-  if(!mount){ return; }
+export async function initProduct() {
+  document.body.classList.add("is-product");
 
-  if(!id){
-    mount.innerHTML = `<div class="p-info"><p class="p-empty">No product ID provided.</p></div>`;
+  const id = getId();
+  const mount = $("#product");
+  if (!mount) return;
+  if (!id) {
+    mount.innerHTML = `<p class="p-empty">No product ID provided.</p>`;
     return;
   }
 
-  mount.innerHTML = `<div class="p-info"><p>Loading product…</p></div>`;
-  try{
-    const data = await getProduct(id);
-    renderProduct(data);
-    document.title = `${data?.title || "Product"} • HotView Labs`;
-  }catch(e){
-    mount.innerHTML = `<div class="p-info"><p class="p-empty">Failed to load product: ${e.message}</p></div>`;
+  mount.innerHTML = `<p class="p-empty">Loading product…</p>`;
+  try {
+    const p = await getProduct(id);
+    render(p);
+    document.title = `${p?.title || "Product"} • HotView Labs`;
+  } catch (err) {
+    console.error("[product] load failed", err);
+    mount.innerHTML = `<div class="p-info"><p class="p-empty">Failed to load product: ${err.message}</p></div>`;
   }
 }
