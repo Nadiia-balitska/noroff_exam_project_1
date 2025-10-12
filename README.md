@@ -1,7 +1,7 @@
-#Login 
+# Login 
 <img width="423" height="282" alt="image" src="https://github.com/user-attachments/assets/c18851d0-70d4-44e2-aa05-3f07d4239550" />
 
-#Registration
+# Registration
 <img width="423" height="353" alt="image" src="https://github.com/user-attachments/assets/44eb6f79-da5c-420d-8cdb-ce34ced88b6c" />
 
 
